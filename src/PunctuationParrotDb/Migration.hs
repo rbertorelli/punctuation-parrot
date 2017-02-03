@@ -30,7 +30,8 @@ main = do
 
   execute_ conn "CREATE TABLE IF NOT EXISTS sentence_potential_errors (sentence_id INTEGER, error_type_id INTEGER, PRIMARY KEY (sentence_id, error_type_id))"
 
-  execute_ conn "CREATE TABLE IF NOT EXISTS student_sentence_errors (sentence_attempt_id INTEGER, error_type_id INTEGER, PRIMARY KEY (sentence_attempt_id, error_type_id))"
+  execute_ conn "CREATE TABLE IF NOT EXISTS student_sentence_errors (id INTEGER PRIMARY KEY, sentence_attempt_id INTEGER, error_type_id INTEGER)"
+  execute_ conn "CREATE INDEX sentence_attempt_id ON student_sentence_errors (sentence_attempt_id)"
 
   -- Base inserts
   execute conn "INSERT INTO teachers (name, email, created_at) VALUES (?, ?, date('now'))" ["Admin" :: String, "admin@punctuation-parrot.com" :: String]
@@ -38,7 +39,7 @@ main = do
   execute conn "INSERT INTO classrooms (teacher_id, max_level, use_others_sentences) VALUES (?, ?, ?)" ["1"::String, "4"::String, "1"::String]
   execute conn "INSERT INTO classroom_students (classroom_id, student_id) VALUES (?, ?)" ["1"::String, "1"::String]
 
-  execute conn "INSERT INTO error_types (name) VALUES (?), (?), (?), (?), (?)" ["Period" :: String, "Capitals" :: String, "Commas" :: String, "Quotes" :: String, "Miscellaneous Punctuation" :: String]
+  execute conn "INSERT INTO error_types (name) VALUES (?), (?), (?), (?), (?)" ["Period" :: String, "Capitals" :: String, "Apostrophes" :: String, "Quotes" :: String, "Miscellaneous Punctuation" :: String]
 
   -- Might want to have these added via manual insert
   execute conn "INSERT INTO sentences (sentence_text, status, teacher_id, level, created_at) VALUES (?, ?, ?, ?, date('now'))" ["\"How now, brown cow,\" said George. He was not happy that day."::String, "1"::String, "1"::String, "10"::String]
