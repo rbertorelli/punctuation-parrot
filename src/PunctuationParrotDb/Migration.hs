@@ -39,7 +39,7 @@ main = do
   execute conn "INSERT INTO classrooms (teacher_id, max_level, use_others_sentences) VALUES (?, ?, ?)" ["1"::String, "4"::String, "1"::String]
   execute conn "INSERT INTO classroom_students (classroom_id, student_id) VALUES (?, ?)" ["1"::String, "1"::String]
 
-  execute conn "INSERT INTO error_types (name) VALUES (?), (?), (?), (?), (?)" ["Period" :: String, "Capitals" :: String, "Apostrophes" :: String, "Quotes" :: String, "Miscellaneous Punctuation" :: String]
+  execute conn "INSERT INTO error_types (name) VALUES (?), (?), (?), (?), (?)" ["Period" :: String, "Capitals" :: String, "Apostrophes" :: String, "Quotes" :: String, "Miscellaneous Punctuation" :: String, "Spacing" :: String]
 
   -- Might want to have these added via manual insert
   execute conn "INSERT INTO sentences (sentence_text, status, teacher_id, level, created_at) VALUES (?, ?, ?, ?, date('now'))" ["\"How now, brown cow,\" said George. He was not happy that day."::String, "1"::String, "1"::String, "10"::String]
