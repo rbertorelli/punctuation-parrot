@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module DatabaseTypes where
+module PunctuationParrotTypes.DatabaseTypes where
 
 import Control.Applicative
 import Data.Time
