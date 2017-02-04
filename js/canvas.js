@@ -1,3 +1,8 @@
+/*
+	Note, this is an expansion of the HTML5 canvas tutorial code from Simon Sarris.
+	See https://github.com/simonsarris/HTML5Unleashed/blob/master/Chapter%206/6.11.html
+*/
+
 function Shape(x, y, w, h, fill, ctx, padding, direction) {
 
 	this.x = x || 0; // perhaps some validation
