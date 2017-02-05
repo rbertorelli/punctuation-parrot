@@ -131,7 +131,7 @@ Shape.prototype.balance = function() {
 
 // Vertical container for rows
 function Container(x, y, w, h, ctx) {
-	var fill = 'rgba(127, 255, 212, .5)';
+	var fill = 'rgba(127, 255, 212, .01)';
 	Shape.call(this, x, y, w, h, fill, ctx, 0, 'vertical');
 
 	this.ROW_HEIGHT = 60; // temp - inject when appropriate
@@ -234,7 +234,8 @@ Row.prototype.balance = function() {
 // Shape holding the grammatical tokens
 function Token(x, y, h, value, ctx) {
 	var w = ctx.measureText(value.tokenValue).width;
-	this.fill = '#ab3c17';
+	//this.fill = '#ab3c17';
+	this.fill = 'rgb(230,230,230)';
 	Shape.call(this, x, y, w, h, this.fill, ctx, 0, 'horizontal');
 
 	this.value = value;
@@ -250,8 +251,11 @@ Token.prototype.constructor = Token;
 
 Token.prototype.draw = function() {
 	this.ctx.fillStyle = this.fill;
+	this.ctx.fillRect(this.x, this.y, this.w, this.h);
+
+	this.ctx.fillStyle = 'rgb(171,60,23)';
 	this.ctx.fillText(this.value.tokenValue, this.x, this.y);
-	this.ctx.strokeRect(this.x, this.y, this.w, this.h);
+	//this.ctx.strokeRect(this.x, this.y, this.w, this.h);
 }
 
 Token.prototype.click = function() {
@@ -261,10 +265,11 @@ Token.prototype.click = function() {
 		var v = this.value.tokenValue;
 		this.value.tokenValue = v[0].toUpperCase() + v.slice(1, v.length);
 		this.value.tokenType = 'CapsWord';
+		return 'switch case';
 	}
 	else if ('CapsWord' === this.value.tokenType) {
 		this.value.tokenValue = this.value.tokenValue.toLowerCase();
-		this.value.variant = 'LowerWord';
+		this.value.tokenType = 'LowerWord';
 		return 'switch case';
 	}
 	else if ('Punctuation' === this.value.tokenType) {
