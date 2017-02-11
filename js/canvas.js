@@ -1,5 +1,5 @@
 /*
-	Note, this is an expansion of the HTML5 canvas tutorial code from Simon Sarris.
+	Note, this (especially ViewState) is an expansion of the HTML5 canvas tutorial code from Simon Sarris.
 	See https://github.com/simonsarris/HTML5Unleashed/blob/master/Chapter%206/6.11.html
 */
 
@@ -417,7 +417,6 @@ function SubmitButton(x, y, w, h, ctx) {
 	var fill = 'green';
 	var direction = '';
 	this.text = 'Ask the parrot!';
-	//ctx.font = "48px Helvetica";
 	Shape.call(this, x, y, w, h, fill, ctx, 0, direction);
 }
 
@@ -430,10 +429,8 @@ SubmitButton.prototype.draw = function() {
 	this.ctx.fillRect(this.x, this.y, this.w, this.h);
 	this.ctx.fillStyle = this.fill;
 	this.ctx.fillStyle = this.fill;
-	//this.ctx.font = "48px Helvetica";
 	var textWidth = this.ctx.measureText(this.text).width
 	this.ctx.fillText(this.text, this.x + .5 * this.w - .5 * textWidth, this.y + 10);
-	//this.ctx.strokeRect(this.x, this.y, this.w, this.h);
 }
 
 /**
@@ -582,7 +579,6 @@ function ViewState(canvas) {
 
 				// specify the likely position
 				if (1 === indexes.length && 0 === indexes[0]) {
-					console.log('first case');
 					position = 0;
 					// this is a little ugly .. perhaps refactor?
 					if (finalRow.subShapes[indexes[0]].x > myState.selection.x) {
@@ -600,11 +596,9 @@ function ViewState(canvas) {
 				else if (1 === indexes.length) {
 					// edge case with a slight overlap of just one token
 					// do later - this is definitely not the conditional
-					console.log('third case');
 				}
 				else {
 					// overlaps two
-					console.log('fourth case');
 					position = indexes[1];
 				}
 				// insert Token at specified location
@@ -626,11 +620,11 @@ function ViewState(canvas) {
 			var attemptStatus;
 
 			if (result.count > 0) {
-				alert("Sentence has " + result.count + " errors!");
+				displayModal("Your sentence has " + result.count + " errors!");
 				attemptStatus = false;
 			}
 			else {
-				alert("Sentence correct!");
+				displayModal("The sentence is correct!");
 				attemptStatus = true;
 			}
 
@@ -643,7 +637,6 @@ function ViewState(canvas) {
 		}
 		
 		else {
-			console.log('else case');
 			// need to get location - if it's a token, execute click()
 			var mouse = myState.getMouse(e);
 			
@@ -682,6 +675,9 @@ function ViewState(canvas) {
 // It only ever does something if the canvas gets invalidated by our code
 ViewState.prototype.draw = function() {
 	// if our state is invalid, redraw and validate!
+
+// draw with width?
+
 	if (!this.valid) {
 		var ctx = this.ctx;
 
