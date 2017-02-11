@@ -1,0 +1,87 @@
+#container {
+  display: block;
+  width: 1200px;
+  height: 600px;
+  margin: auto;
+}
+
+
+#game {
+  background: url('../images/tropical_beach.jpg');
+}
+
+#title {
+  font-family: Sans;
+  font-size: 5em;
+}
+
+#modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#modal {
+  background-color: #EEE;
+  margin: 15% auto;
+  padding: 20px;
+  border: 3px solid #111;
+  width: 40%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: Sans;
+  font-size: 1.5em;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+#modal-title {
+  margin: 0 auto 0 auto;
+  text-align: center;
+}
+
+#close {
+  color: green;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: Sans;
+  background-color: rgb(166,218,42);
+  padding: 5px;
+  text-align: center;
+}
+
+#close:hover, #close:focus {
+  background-color: rgb(176,228,52);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#close:active {
+  background-color: rgb(166,218,42);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@-webkit-keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+
+@media (max-width: 1200px) {
+  #container {
+    width: 100%;
+  }
+}
