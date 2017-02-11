@@ -42,7 +42,7 @@ sentenceUpdate (Just post) = do
   if errorCount > 0 then do
     rowId <- lastInsertRowId conn
 
-    -- need to look up types
+    -- need to look up ids used here
     insertError (fromIntegral rowId) 1 (FPE.period post)
     insertError (fromIntegral rowId) 2 (FPE.caps post)
     insertError (fromIntegral rowId) 3 (FPE.apostrophe post)
@@ -95,7 +95,7 @@ fetchUserSentence studentId = do
       \sentences s \
       \LEFT JOIN sentence_attempts sa ON s.id = sa.sentence_id AND sa.student_id = :studentId \
     \WHERE \
-      \sa.id IS NULL \
+      \(sa.id IS NULL OR sa.correct = 'False') \
       \AND \
       \s.level <= :level" [":studentId" := studentId, ":level" := (studentLevel::Int)]) :: IO [SentenceField]
 
