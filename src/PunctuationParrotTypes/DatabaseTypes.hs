@@ -26,6 +26,9 @@ data SentenceField = SentenceField Int T.Text Int Int Int T.Text deriving (Show)
 -- id, sentence_id, modified_sentence, student_id, correct, created_at
 data SentenceAttemptField = SentenceAttemptField Int Int T.Text Int Int T.Text deriving (Show)
 
+-- error name, count
+data ResultsField = ResultsField T.Text Int deriving (Show)
+
 
 -- Single field Instances (mostly for select results)
 instance FromRow SingleTextField where
@@ -55,3 +58,6 @@ instance FromRow SentenceField where
 
 instance ToRow SentenceField where
   toRow (SentenceField id_ sentence_text status teacherId level createdAt) = toRow (id_, sentence_text, status, teacherId, level, createdAt)
+
+instance FromRow ResultsField where
+  fromRow = ResultsField <$> field <*> field

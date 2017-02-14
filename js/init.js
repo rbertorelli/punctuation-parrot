@@ -22,11 +22,9 @@ document.onreadystatechange = function () {
   }
 }
 
-function gameInit() {
-  var vs = new ViewState(document.getElementById('game'));
+var vs = new ViewState(document.getElementById('game'));
 
-  /* Execute */
-
+var gameInit = function() {
   var request = new XMLHttpRequest();
   request.open("GET", "./getSentence");
 
@@ -34,16 +32,25 @@ function gameInit() {
     if (200 === request.status) {
       var sentence = JSON.parse(request.responseText);
 
-      var parser = new Parser(sentence.text);
-      var s = parser.parseSentence();
+      if (typeof sentence.Right !== 'undefined') {
+        var parser = new Parser(sentence.Right.text);
+        var s = parser.parseSentence();
 
-      s.createErrors(sentence.studentLevel);
+        s.createErrors(sentence.Right.studentLevel);
       
-      vs.ingestSentence(s, {
-        "studentId": sentence.studentId,
-        "studentLevel": sentence.studentLevel,
-        "sentenceId": sentence.sentenceId
-      });
+        vs.ingestSentence(s, {
+          "studentId": sentence.studentId,
+          "studentLevel": sentence.studentLevel,
+          "sentenceId": sentence.sentenceId
+        });
+      }
+      else if (typeof sentence.Left !== 'undefined') {
+        displayFinal(sentence.Left.text);
+      }
+      else {
+        displayModal("Error with getting sentence.");
+      }
+      
     }
     else {
       console.log('Sentence init request failed');
@@ -73,7 +80,6 @@ function updateSentenceAttempt(sentenceId, studentId, attemptStatus, data) {
       console.log('success, but sentence failure');
     }
     else {
-      //alert("Submission failed. Try again. If this happens repeatedly please contact support.");
       displayModal("Submission failed. Try again. If this happens repeatedly please contact support.");
 
     }
@@ -87,5 +93,8 @@ function displayModal(message) {
   modal.style.display = "block";
   var textarea = document.getElementById('modal-text');
   textarea.innerText = message;
+}
 
+function displayFinal(countArray) {
+  
 }

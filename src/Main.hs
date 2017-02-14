@@ -23,7 +23,6 @@ gamePage = toResponse $
             H.title "Punctuation Parrot!"
             H.script ! A.src "js/canvas.js" $ mempty
             H.script ! A.src "js/parser.js" $ mempty
-            H.script ! A.src "js/init.js" $ mempty
             H.link ! A.rel "stylesheet" ! A.type_ "text/css" ! A.href "css/app.css"
         H.body ! A.onload "gameInit()" $ do
             H.div ! A.id "modal-overlay" $ do
@@ -36,6 +35,7 @@ gamePage = toResponse $
                 H.img ! A.src "images/parrot.png" ! A.width "73" ! A.height "64"
                 H.span ! A.id "title" $ "Punctuation Parrot!"
                 H.canvas ! A.id "game" ! A.width "1200" ! A.height "600" $ "Please upgrade your browser."
+            H.script ! A.src "js/init.js" $ mempty
 
 --getSentence :: Int -> IO Data.ByteString.Lazy.Internal.ByteString
 getSentence userId = do
@@ -54,7 +54,6 @@ getBody = do
 updateAttempt = do
     body <- getBody
     let post = AE.decode body :: Maybe FrontEndPost
-    --return $ DA.sentenceUpdate post
     let result = DA.sentenceUpdate post
     x <- liftIO result
     return $ toResponse $ show x

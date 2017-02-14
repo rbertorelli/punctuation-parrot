@@ -159,6 +159,7 @@ Container.prototype.createRow = function() {
 }
 
 Container.prototype.ingestSentence = function(sentence, metadata) {
+	
 	this.sentence = sentence;
 	this.metadata = metadata;
 
@@ -675,8 +676,7 @@ function ViewState(canvas) {
 // It only ever does something if the canvas gets invalidated by our code
 ViewState.prototype.draw = function() {
 	// if our state is invalid, redraw and validate!
-
-// draw with width?
+	// draw with width?
 
 	if (!this.valid) {
 		var ctx = this.ctx;
@@ -684,9 +684,6 @@ ViewState.prototype.draw = function() {
 		var shapes = this.shapes;
 
 		this.clear();
-
-		// ** Add stuff you want drawn in the background all the time here **
-
 		this.container.draw();
 		this.selections.draw();
 		this.submitButton.draw();
@@ -728,9 +725,13 @@ ViewState.prototype.getMouse = function(e) {
 }
 
 ViewState.prototype.clear = function() {
+	this.shapes = [];
 	this.ctx.clearRect(this.x, this.y, this.w, this.h);
 }
 
 ViewState.prototype.ingestSentence = function(sentence, metadata) {
+	this.shapes = [];
+	this.clear();
+	this.container = new Container(0, 0, this.width, this.height * .8, this.ctx);
 	this.container.ingestSentence(sentence, metadata);
 }

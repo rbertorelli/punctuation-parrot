@@ -5,6 +5,7 @@ module DatabaseAccess where
 import PunctuationParrotTypes.DatabaseTypes
 import PunctuationParrotTypes.SentenceExport
 import qualified PunctuationParrotTypes.FrontEndPost as FPE
+import qualified PunctuationParrotTypes.ResultsExport as RE
 import Control.Applicative
 import Data.Time
 import qualified Data.Text as T
@@ -19,15 +20,13 @@ textFieldUnpack (SingleTextField x) = x
 intFieldUnpack :: SingleIntField -> Int
 intFieldUnpack (SingleIntField x) = x :: Int
 
-
 {-
-So we have a Maybe FrontEndPost (Should this just be a FrontEndPost?)
-Need to create a sentence attempt based off of this with the boolean value.
-Get the id from this.
+  So we have a Maybe FrontEndPost
+  Need to create a sentence attempt based off of this with the boolean value.
+  Get the id from this.
 
-If any errors exist, we need to insert into student_sentence_errors
-
-If everything succeeded, return IO 200, otherwise IO 500
+  If any errors exist, we need to insert into student_sentence_errors
+  If everything succeeded, return IO 200, otherwise IO 500
 -}
 
 sentenceUpdate :: Maybe FPE.FrontEndPost -> IO Int
@@ -37,7 +36,7 @@ sentenceUpdate (Just post) = do
   execute conn "INSERT INTO sentence_attempts (sentence_id, student_id, correct, created_at) \
               \VALUES (?, ?, ?, datetime())" [show (FPE.sentenceId post), show (FPE.studentId post), show (FPE.attemptStatus post)]
               -- The entire array needs to have the same type
-
+  close conn
   let errorCount = getErrorCount post
   if errorCount > 0 then do
     rowId <- lastInsertRowId conn
@@ -65,10 +64,11 @@ insertError attemptId errorId count
   | otherwise = do
     conn <- open "../db/db.sqlite"
     execute conn "INSERT INTO student_sentence_errors (sentence_attempt_id, error_type_id) VALUES (?, ?)" [attemptId, errorId]
+    close conn
     insertError attemptId errorId (count - 1)
 
 
---fetchUserSentence :: Database.SQLite.Simple.ToField.ToField v => v -> IO SentenceField
+fetchUserSentence :: Int -> IO (Either RE.ResultsExport SentenceExport)
 fetchUserSentence studentId = do
   conn <- open "../db/db.sqlite"
 
@@ -99,8 +99,24 @@ fetchUserSentence studentId = do
       \AND \
       \s.level <= :level" [":studentId" := studentId, ":level" := (studentLevel::Int)]) :: IO [SentenceField]
 
-  choice <- pickRandom rows
-  return $ sentenceToExport choice studentId studentLevel
+  if (length rows) > 0 then do
+    close conn
+    choice <- pickRandom rows
+    return $ Right (sentenceToExport choice studentId studentLevel)
+
+  else do
+    results <- (queryNamed conn "SELECT \
+    \ name, count(*) \
+    \ FROM \
+    \   student_sentence_errors sse \
+    \   INNER JOIN error_types et ON sse.error_type_id = et.id \
+    \   INNER JOIN sentence_attempts sa ON sse.sentence_attempt_id = sa.id \
+    \ WHERE \
+    \   sa.student_id = :studentId \
+    \ GROUP BY name" [":studentId" := studentId]) :: IO [ResultsField]
+    
+    close conn
+    return $ Left (RE.resultToExport results)
 
 
 pickRandom :: [a] -> IO a
