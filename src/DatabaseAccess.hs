@@ -90,14 +90,21 @@ fetchUserSentence studentId = do
 
   -- Pick a random sentence from those not done yet within max level
   rows <- (queryNamed conn "SELECT \
-      \s.* \
-    \FROM \
-      \sentences s \
-      \LEFT JOIN sentence_attempts sa ON s.id = sa.sentence_id AND sa.student_id = :studentId \
-    \WHERE \
-      \(sa.id IS NULL OR sa.correct = 'False') \
-      \AND \
-      \s.level <= :level" [":studentId" := studentId, ":level" := (studentLevel::Int)]) :: IO [SentenceField]
+          \s.* \
+      \FROM \
+          \sentences s \
+          \LEFT JOIN (select \
+                  \sentence_id, correct \
+              \FROM \
+                  \sentence_attempts \
+              \WHERE \
+                  \student_id = :studentId \
+                  \AND \
+                  \correct = 'True') sa ON s.id = sa.sentence_id \
+      \WHERE \
+          \sa.sentence_id IS NULL \
+          \AND \
+          \s.level <= :level" [":studentId" := studentId, ":level" := (studentLevel::Int)]) :: IO [SentenceField]
 
   if (length rows) > 0 then do
     close conn

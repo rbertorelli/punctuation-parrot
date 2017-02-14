@@ -15,7 +15,6 @@ import Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as L
 import PunctuationParrotTypes.FrontEndPost
 
-
 --gamePage :: Response
 gamePage = toResponse $
     H.html $ do

@@ -39,9 +39,9 @@ var gameInit = function() {
         s.createErrors(sentence.Right.studentLevel);
       
         vs.ingestSentence(s, {
-          "studentId": sentence.studentId,
-          "studentLevel": sentence.studentLevel,
-          "sentenceId": sentence.sentenceId
+          "studentId": sentence.Right.studentId,
+          "studentLevel": sentence.Right.studentLevel,
+          "sentenceId": sentence.Right.sentenceId
         });
       }
       else if (typeof sentence.Left !== 'undefined') {
@@ -96,5 +96,23 @@ function displayModal(message) {
 }
 
 function displayFinal(countArray) {
-  
+  var textarea = document.getElementById('modal-text');
+  arrayLen = countArray.length;
+
+  var ul = document.createElement('ul');
+
+  for (var i = 0; i < arrayLen; i++) {
+    var element = document.createElement('li');
+    element.innerText = countArray[i];
+    ul.appendChild(element);
+  }
+
+  if (arrayLen === 0) {
+    ul.innerText = "Perfect score!";
+  }
+
+  textarea.appendChild(ul);
+
+  var modal = document.getElementById('modal-overlay');
+  modal.style.display = "block";
 }
