@@ -67,38 +67,3 @@ main = simpleHTTP nullConf $ msum
     dir "play" $ ok $ gamePage,
     dir "updateStats" $ updateAttempt >>= \res -> ok res
   ]
-
-
-
-{-
-
-
-ok, so this formulation works
-
-updateAttempt :: ServerPartT IO Response
-updateAttempt = do
-    body <- getBody
-    let post = AE.decode body :: Maybe FrontEndPost
-    let result = DA.sentenceUpdate post
-    x <- liftIO result
-    return $ toResponse x
-
-
-...
-dir "updateStats" $ updateAttempt >>= \res -> ok res
-
-but why not
-
-updateAttempt :: ServerPartT IO (IO String)
-updateAttempt = do
-    body <- getBody
-    let post = AE.decode body :: Maybe FrontEndPost
-    return $ DA.sentenceUpdate post
-
-
-...
-
-dir "updateStats" $ liftIO updateAttempt >>= \res -> ok $ toResponse res
-
-
--}

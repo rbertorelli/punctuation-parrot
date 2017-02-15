@@ -14,13 +14,6 @@ data ResultsExport = ResultsExport {
 instance ToJSON ResultsExport where
   toEncoding = genericToEncoding defaultOptions
 
-{-
-resultToExport :: ResultsField -> ResultsExport
-resultToExport (ResultsExport errorType errorCount) = 
-    ResultsExport {
-        text = T.unpack ,
-    }
--}
 
 resultToExport :: [ResultsField] -> ResultsExport
 resultToExport results =
