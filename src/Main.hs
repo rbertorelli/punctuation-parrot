@@ -27,7 +27,7 @@ gamePage = toResponse $
             H.div ! A.id "modal-overlay" $ do
                 H.div ! A.id "modal" $ do
                     H.h3 ! A.id "modal-title" $ "Your result:"
-                    H.p ! A.id "modal-text" $ mempty
+                    H.div ! A.id "modal-text" $ mempty
                     H.div ! A.id "close" $ "Close"
 
             H.div ! A.id "container" $ do

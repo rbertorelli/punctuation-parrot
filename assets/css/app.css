@@ -36,15 +36,15 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   font-family: Sans;
   font-size: 1.5em;
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
 }
 
 #modal-title {
   margin: 0 auto 0 auto;
   text-align: center;
+}
+
+#modal-text {
+  display: flex;
 }
 
 #close {
@@ -69,14 +69,37 @@
   cursor: pointer;
 }
 
-@-webkit-keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
+#img {
+  animation: parrotBounce linear 4.5s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
 }
 
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
+@keyframes parrotBounce {
+  0% {
+    transform:  translate(0px,0px)  ;
+  }
+  5% {
+    transform:  translate(0px,-25px)  ;
+  }
+  10% {
+    transform:  translate(0px,0px)  ;
+  }
+  15% {
+    transform:  translate(0px,-15px)  ;
+  }
+  20% {
+    transform:  translate(0px,0px)  ;
+  }
+  25% {
+    transform:  translate(0px,-5px)  ;
+  }
+  30% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform:  translate(0px,0px)  ;
+  }
 }
 
 

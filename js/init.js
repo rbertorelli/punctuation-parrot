@@ -8,7 +8,6 @@ document.onreadystatechange = function () {
       // TODO: redraw on resize
       //canvas.width = container.width;
       //canvas.height = container.height;
-
       // call something to redraw
     }
 
@@ -100,6 +99,17 @@ function displayFinal(countArray) {
   arrayLen = countArray.length;
 
   var ul = document.createElement('ul');
+  var img = document.createElement('img');
+
+  img.setAttribute('src', 'images/parrot.png');
+
+  if (arrayLen === 0) {
+    ul.innerText = "Perfect score!";
+    img.setAttribute('id', 'img');
+  }
+  else {
+    ul.innerText = "Your errors:";
+  }
 
   for (var i = 0; i < arrayLen; i++) {
     var element = document.createElement('li');
@@ -107,11 +117,8 @@ function displayFinal(countArray) {
     ul.appendChild(element);
   }
 
-  if (arrayLen === 0) {
-    ul.innerText = "Perfect score!";
-  }
-
   textarea.appendChild(ul);
+  textarea.appendChild(img);
 
   var modal = document.getElementById('modal-overlay');
   modal.style.display = "block";
